@@ -1,0 +1,110 @@
+.profile-order-card-container{
+    a{
+        text-decoration: none;
+        font-weight: bold;
+        color: black;
+    }
+    a:hover{
+        color: orange;
+    }
+    width: 100%;
+    //height: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    background-color: white;
+    h2{
+        margin: 0 0 0 10px;
+        text-align: left;
+    }
+    .div-header-profile-order-card{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        h2{
+            flex: 5;
+        }
+        .div-order-status{
+            display: flex;
+            padding: 0 10px 0 10px;
+            border-radius: 20px;
+            border: 1px solid black;
+            align-items: center;
+            p{
+                margin: 0;
+            }
+        }
+    }
+    .product-info-for-order-container{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        //height: 100px;
+        //background-color: aqua;
+        justify-content: center;
+        .product-info-for-order{
+            display: flex;
+            width: 100%;
+            //height: 100px;
+            //background-color: orange;
+            margin: 10px;
+            .div-product-link{
+                display: flex;
+                flex-direction: row;
+                font-size: large;
+                flex: 3;
+                text-align: left;
+            }
+            .div-product-count{
+                flex: 1;
+            }
+            .div-product-price{
+                flex: 1;
+                padding-right: 10px;
+                p{
+                    text-align: right;
+                }
+            }
+            p{
+                margin: 0;
+            }
+        }
+    }
+    .div-delivery-info{
+        display: flex;
+        width: 100%;
+        p{
+            margin: 10px 0 0 10px;
+            text-align: left;
+        }
+        h3{
+            margin: 0 0 0 10px;
+            text-align: left;
+        }
+        .div-main-delivery-and-payment-info{
+            flex: 4;
+        }
+        .div-full-order-price-info{
+            display: flex;
+            flex-direction: column;
+            .div-order-count-price{
+                display: flex;
+                justify-content: space-between;
+            }
+            .div-order-delivery-price{
+                display: flex;
+                justify-content: space-between;
+            }
+            .div-total-order-price{
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+.customer-report-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    h2{
+        margin: 0;
+    }
+}
+.make-PDF-btn{
+    position: fixed;
+        bottom: 20px;
+        right: 32px;
+}

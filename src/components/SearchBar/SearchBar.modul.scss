@@ -1,0 +1,12 @@
+.search-products-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .product-list-container {
+    max-height: 400px; // Задайте нужную высоту
+    overflow-y: auto; // Вертикальная прокрутка
+  }

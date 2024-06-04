@@ -1,0 +1,35 @@
+.reviews-slider {
+    display: flex;
+    overflow-x: scroll;
+  
+    .review {
+      margin-right: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+  
+      .author {
+        font-weight: bold;
+      }
+  
+      .text {
+        margin-top: 10px;
+      }
+    }
+  
+    .reviews-pagination {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+  
+      .swiper-pagination-bullet {
+        background-color: #ccc;
+        margin: 0 5px;
+      }
+  
+      .swiper-pagination-bullet-active {
+        background-color: #000;
+      }
+    }
+  }

@@ -1,0 +1,86 @@
+.reviews-container{
+    background-color: wheat;
+    border-radius: 20px;
+    height: 100%;
+    padding: 20px;
+    flex-direction: column;
+    .product-info-for-review-div{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        border-radius: 20px;
+        padding: 20px;
+        align-items: flex-start;
+        p{
+            text-align: left;
+            font-size: large;
+        }
+        .product-raiting-div{
+            display: flex;
+            flex-direction: row;
+            p{
+                margin: 0;
+                margin-left: 10px;
+            }
+        }
+    }
+    .product-reviews{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        border: 1px solid black;
+        background-color: wheat;
+        border-radius: 20px;
+        padding: 20px;
+        .user-review{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            .user-review-info{
+                display: flex;
+                flex-direction: row;
+                border: 1px solid black;
+                border-left: 0;
+                border-top: 0;
+                border-right: 0;
+                padding: 0 0 20px 0;
+                width: 100%;
+                align-items: center;
+                h3{
+                    margin-left: 20px;
+                }
+                h4{
+                    margin-left: 20px;
+                }
+            }
+            .review-info{
+                display: flex;
+                width: 100%;
+                //background-color: aqua;
+                //height: 100px;
+                margin-top: 20px;
+                flex-direction: column;
+                text-align: left;
+                h2{
+                    margin: 0 0 20px 0;
+                }
+                p{
+                    font-size: large;
+                    margin: 0;
+                }
+            }
+            .card-buttons-reviews{
+                flex: 5;
+                text-align: right;
+            }
+        }
+    }
+    .make-review-btn{
+        position: fixed;
+        bottom: 20px;
+        right: 32px;
+        h2{
+            margin: 0;
+        }
+    }
+}

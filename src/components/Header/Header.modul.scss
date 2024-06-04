@@ -1,0 +1,111 @@
+.header-container{
+    height: 96px;
+    width: 100%;
+    background-color: #222;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    top: 0;
+    z-index: 1000;
+    
+    .header-inner-container{
+        width: 100%;
+        max-width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .logo-container{
+            display: flex;
+            width: 100%;
+            max-width: 20%;
+            a{
+                display: flex;
+                width: 100%;
+                //min-width: 60%;
+            }
+            .menu{
+                display: flex;
+                stroke: white;
+                min-width: 30%;
+                width: 100%;
+            }
+            .menu:hover{
+                transition: all .3s ease;
+                stroke: orange;
+            }
+        }
+        .search-bar-header-container{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 50%;
+            //align-self: center;
+            .search-bar-header-inner-container{
+                flex: 1; // Занимает всё доступное пространство, кроме места, занимаемого SearchBar
+                display: flex;
+                /* width: 100%; */
+                flex-direction: column;
+                justify-content: center;
+                margin-left: 10px;
+            }
+            .search-bar-container {
+                display: flex;
+                justify-content: flex-end;
+                padding: 10px; // Дополнительные отступы, если нужно
+                box-sizing: border-box;
+              }
+        }
+        .general-buttons-container{
+            a{
+                display: flex;
+                justify-content: center;
+            }
+            //margin-right: 40px;
+            display: flex;
+            width: 100%;
+            max-width: 20%;
+            justify-content: space-between;
+            .badge{
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                .basket{
+                    width: 70%;
+                }
+            }
+            .favorites{
+                width: 70%;
+            }
+            .user{
+                width: 70%;
+            }
+            .user:hover{
+                stroke: orange;
+            }
+            
+        }
+    }
+    svg{
+        fill: white;
+    }
+    svg:hover{
+        transition: all .3s ease;
+        fill: orange;
+    }
+    .modal-login-form{
+        padding: 50px;
+        #remember-forgot{
+            .ant-form-item-control-input-content{
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+    //.logo{
+    //}
+    //.logo:hover{
+    //}
+    //.basket{
+    //}
+}

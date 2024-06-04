@@ -1,0 +1,49 @@
+.profile-container {
+    padding: 20px 30px 20px 20px;
+    border-radius: 20px;
+    background-color: wheat;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-header .ant-typography {
+    margin-left: 20px;
+  }
+  .profile-personal-info{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 10px;
+    .profile-user-own-info{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .p-u-o-i-lables{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .p-u-o-i-values{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+}
+.delivery-aa-profile{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .Redal-profile{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+//.profile-orders{}
+  
+  /* Другие стили могут быть добавлены здесь */
+  

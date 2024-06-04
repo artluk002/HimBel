@@ -1,0 +1,47 @@
+.compare-container{
+    max-width: 100%;
+    display: flex;
+    background-color: wheat;
+    border-radius: 20px;
+    //height: 100vh;
+    padding: 20px;
+    flex-direction: column;
+    h2{
+        text-align: left;
+    }
+    .compare-block{
+        display: grid;
+        flex-direction: row;
+        //background-color: aqua;
+        //height: 500px;
+        border-radius: 20px;
+        padding: 20px;
+        
+        .compare-types{
+            //display: flex;
+            //flex-direction: row;
+            //border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+            p{
+                margin: 0;
+            }
+        }
+        .products-for-compare{
+            //display: flex;
+            //width: 100%;
+            width: 100%;
+            max-width: 100%;
+            background-color: transparent;
+            overflow-x: auto;
+            //overflow-y: hidden;
+        }
+    }
+}
+.highlight {
+    background-color: lightgreen;
+    box-shadow: 0px 0px 10px 10px lightgreen;
+}
+.ant-table-container{
+    padding: 5px;
+}

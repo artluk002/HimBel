@@ -1,0 +1,16 @@
+.paymentWay{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.report-pickup{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    h3{
+        margin: 0;
+    }
+    p{
+        margin: 0;
+    }
+}
