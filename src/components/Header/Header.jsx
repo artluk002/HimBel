@@ -18,7 +18,7 @@ const getItem = (key, label, children) => {
 }   
 
 export const Header = () => {
-    const { toggleState, orderToggleState, registrationToggleState } = useContext(MyContext);
+    const { toggleState, orderToggleState, registrationToggleState, registrationToggle } = useContext(MyContext);
     // message
     const [messageApi, contextHolder] = message.useMessage();
     const success = (login) => {
@@ -71,9 +71,12 @@ export const Header = () => {
         getBaggeCount({user_id: userId});
     }, [orderToggleState])
     useEffect(() => {
-        registrationSuccess();
-        setIsModalOpen(false);
-        setIsRegModalOpen(false);
+        if(registrationToggleState === true) {
+            registrationSuccess();
+            setIsModalOpen(false);
+            setIsRegModalOpen(false);
+            registrationToggle();  
+        }
     }, [registrationToggleState]);
     /*setInterval(() => {
         const userId = JSON.parse(localStorage.getItem('user')).id;

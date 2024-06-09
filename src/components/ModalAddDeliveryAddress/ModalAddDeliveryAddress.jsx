@@ -67,6 +67,7 @@ export const ModalAddDeliveryAddress = ({visible, onOk, onClose}) => {
               const userId = JSON.parse(localStorage.getItem('user')).id;
               const response = await BasketAPI.addUserAddress({address: values.address, name: values.name, surname: values.surname, email: values.email, phone: values.phone, user_id: userId, price: deliveryPrice});
               if (response.status === 200) {
+                form.resetFields(); 
                 success(response.data);
                 onOk();
               }

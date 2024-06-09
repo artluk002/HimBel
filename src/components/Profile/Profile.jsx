@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import  {MinusCircleOutlined, PlusOutlined, UserOutlined  } from '@ant-design/icons';
+import  {MinusCircleOutlined, PlusOutlined, UserOutlined , DeleteOutlined } from '@ant-design/icons';
 import "./Profile.modul.scss";
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { IoAddSharp } from "react-icons/io5";
@@ -47,8 +47,10 @@ const formItemLayout = {
   };
 
 export const Profile = () => {
+  const [form] = Form.useForm();
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [deliveryAddressToggle, setDeliveryAddressToggle] = useState(false);
+  const [tableCharacteristics, setTableCharacteristics] = useState([]);
   // message
   const [messageApi, contextHolder] = message.useMessage();
   const success = (message) => {
@@ -71,6 +73,9 @@ export const Profile = () => {
     const navigate = useNavigate();
     useEffect(() => {
         const status = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).status : '';
+        if (status === 'admin') {
+          CatalogAPI.CharacteristicsReq().then(e => {setTableCharacteristics(e.data)})
+        }
         setUserStatus(status);
         const userId = JSON.parse(localStorage.getItem('user')).id;
        
@@ -114,7 +119,41 @@ export const Profile = () => {
         const response = await CatalogAPI.addNewCharacteristcsReq({characteristics: values.characteristics});
         if(response.status === 200) {
           success(response.data);
+          await CatalogAPI.CharacteristicsReq().then(e => {setTableCharacteristics(e.data)})
+          form.resetFields();
           setIsAddCharModalOpen(false);
+        }
+        else{
+          errorm(response.data);
+        }
+    } catch (err) {
+        console.error('Ошибка дабавления типа: ', err);
+        errorm(err);
+      }
+    }
+    // modal delete new characteristic
+    const [isDeleteCharModalOpen, setIsDeleteCharModalOpen] = useState(false);
+    const showDeleteCharModal = () => {
+      setIsDeleteCharModalOpen(true);
+    };
+    const handleDeleteCharOk = () => {
+      setIsDeleteCharModalOpen(false);
+    };
+  
+    const handleDeleteCharCancel = () => {
+      setIsDeleteCharModalOpen(false);
+    };
+    const onFinishDeleteChar = async (values) => {
+      try{
+        //console.log(values)
+        console.log(values.characteristics)
+        const response = await CatalogAPI.deleteCharacteristcsReq({characteristics: values.characteristics});
+        if(response.status === 200) {
+          success(response.data);
+          await CatalogAPI.CharacteristicsReq().then(e => {setTableCharacteristics(e.data)})
+          values = null;
+          setIsDeleteCharModalOpen(false);
+          form.resetFields();
         }
         else{
           errorm(response.data);
@@ -195,7 +234,14 @@ export const Profile = () => {
           </div>
           <Button type='primary' onClick={showdeliveryModal} >Адреса достаки</Button>
           {userStatus === 'admin' && (
-            <Link to={`/reports`}><Button type='primary'>Отчёты</Button></Link>
+            <div style={{
+              display: 'flex', 
+              flexDirection: 'row',
+              gap: '20px',             
+            }}>
+              <Link to={`/reports`}><Button type='primary'>Отчёты</Button></Link>
+              <Link to={`/deleted-products`}><Button type='primary'>Удалённые товары</Button></Link>
+            </div>
           )}
         </Col>
         <Col span={16} style={{padding: "0 20px 0 20px"}} className='profile-orders'>
@@ -206,7 +252,15 @@ export const Profile = () => {
       </Row>
       {/* Другие разделы личной информации могут быть добавлены здесь */}
       {userStatus === 'admin' && (
-                <FloatButton icon={<IoAddSharp />} onClick={showAddCharModal} tooltip={<div>Добавить новые характеристики</div>} />
+          <FloatButton.Group
+            shape="square"
+            style={{
+              right: 94,
+            }}
+          >
+            <FloatButton icon={<IoAddSharp />} onClick={showAddCharModal} tooltip={<div>Добавить новые характеристики</div>} />
+            <FloatButton icon={<DeleteOutlined />} onClick={showDeleteCharModal} tooltip={<div>Удалить характеристики</div>} />
+          </FloatButton.Group>
             )}
         <Modal
             title="Добавить характеристики продукта"
@@ -217,6 +271,7 @@ export const Profile = () => {
             closable={false}
             >
               <Form
+              form={form}
               {...formItemLayout}
               variant="filled"
               onFinish={onFinishAddChar}
@@ -278,7 +333,7 @@ export const Profile = () => {
                                 <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}
                                 style={{width: "100%"}}
                                 >
-                                Add characteristic
+                                Добавить характеристику
                                 </Button>
                             </Form.Item>
                             </>
@@ -316,6 +371,88 @@ export const Profile = () => {
                 <Button style={{margin: "0 0 20px 0"}} type="link" onClick={showNewDevAddressModal}>добавить адрес доставки</Button>
                 <ModalAddDeliveryAddress visible={isNewDevAddressModalVisible} onOk={handleDevAddressOk} onClose={handleDevAddressCancel} />
               </div>
+            </Modal>
+            <Modal
+              title={`Удалить характеристики продукта`}
+              open={isDeleteCharModalOpen}
+              onOk={handleDeleteCharOk}
+              onCancel={handleDeleteCharCancel}
+              footer={[]}
+              closable={false}
+              width={`800px`}
+            >
+              <Form
+              form={form}
+              {...formItemLayout}
+              variant="filled"
+              onFinish={onFinishDeleteChar}
+              style={{
+              maxWidth: 800,
+              }}
+              >
+              <Form.List name="characteristics">
+                        {(fields, { add, remove }) => (
+                            <>
+                            {fields.map(({ key, name, ...restField }) => (
+                                <Space
+                                key={key}
+                                style={{
+                                    display: 'flex',
+                                    marginBottom: 8,
+                                    justifyContent: "space-around",
+                                }}
+                                align="baseline"
+                                >
+                                <Form.Item
+                                    {...restField}
+                                    name={[name, 'characteristic_id']}
+                                    rules={[
+                                    {
+                                        required: true,
+                                        message: 'Missing characteristic name',
+                                    },
+                                    ]}
+                                >
+                                    <Select style={{ width: "700px" }} >
+                                        {tableCharacteristics.map(e => (
+                                            <Option value={e.id}>{e.name}</Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <MinusCircleOutlined onClick={() => remove(name)} />
+                                </Space>
+                            ))}
+                            <Form.Item
+                            style={{
+                              alignSelf: "center", 
+                           }}
+                           wrapperCol={{
+                            offset: 0,
+                            span: 24,
+                          }}
+                            >
+
+                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}
+                                style={{width: "100%"}}
+                                >
+                                Добавить характеристику к удалению
+                                </Button>
+                            </Form.Item>
+                            </>
+                            )}
+                  </Form.List>
+
+                  <Form.Item
+                    wrapperCol={{
+                        offset: 10,
+                        span: 16,
+                    }}
+                  >
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
             </Modal>
     </div>
   );

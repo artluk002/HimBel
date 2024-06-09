@@ -223,6 +223,8 @@ export const Product = () => {
           success(response.data);
           console.log('Removing item:', removedItem);
           remove(name);
+          CatalogAPI.productCharacteristicsReq(id).then(e => {setCharacteristics(e.data)})
+          CatalogAPI.productCharacteristicsForListReq(id).then(e => {setCharacteristicsForList(e.data)})
         }
         
       } catch (err) {
@@ -416,12 +418,12 @@ export const Product = () => {
         }
       }
       else {
-        errorm('продукт уже находиться в сравнении')        
+        errorm('продукт уже находиться в избранном')        
       }
     }
     catch  (error) {
-      console.error("Ошибка добавления в сравнения:", error);
-      errorm( "Произошла ошибка при добавлении в сравнения");
+      console.error("Ошибка добавления в избранное:", error);
+      errorm( "Произошла ошибка при добавлении в избранное");
     }
   }
   
@@ -493,12 +495,19 @@ export const Product = () => {
                   </div>
                   <h1>{product.name}</h1>
                         <Link to={`/product/${id}/reviews`}><Rate allowHalf disabled value={product.raiting}/></Link>
+                        {product.is_active === 1? (
                         <p>товар: {product.quantity === 0? (<span style={{color: "red"}}>отсутствует</span>) : (<span style={{color: "green"}}>в наличии {product.quantity} шт.</span>) }</p>
+                        )
+                        : (
+                        <p>товар: <span style={{color: "yellow"}}>снят с продажи</span></p>
+                        )}
                         {product.quantity === 0? '' : (<InputNumber min={1} max={product.quantity} onChange={handleInputChange} defaultValue={1}/>)}
-                        <div className="buttons-aa-container">
-                            <Button onClick={productToFavorites} type="link">{productInFavorites === 'нет' ? 'В избранное' : 'В избранном'}</Button>
-                            <Button onClick={productToCompare} type="link">{productInCompare === 'нет' ? 'К сравнению' : 'В сравнении'}</Button>
-                        </div>
+                          {product.is_active === 1? (
+                          <div className="buttons-aa-container">
+                              <Button onClick={productToFavorites} type="link">{productInFavorites === 'нет' ? 'В избранное' : 'В избранном'}</Button>
+                              <Button onClick={productToCompare} type="link">{productInCompare === 'нет' ? 'К сравнению' : 'В сравнении'}</Button>
+                          </div>
+                          ) : ''}
                         <h1>{product.price} р.</h1>
                         {product.quantity === 0? '' : (<Button onClick={addToBasket} className="add-to-order-button">{productInOrder === 'нет' ? 'Добавить в корзину' : 'В корзине'}</Button>)}
                 </div>

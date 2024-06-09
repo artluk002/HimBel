@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import "./CompareProductCard.modul.scss";
+import "./FavoritesProductCard.modul.scss";
 import { CloseOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { CompareAPI, PhotoAPI } from "../api/api";
@@ -11,7 +11,7 @@ import { Card,
         } from 'antd';
 const { Meta } = Card;
 
-export const CompareProductCard = (props) => {
+export const FavoritesProductCard = (props) => {
     // User status
     const [userId, setUserId] = useState();
 
@@ -62,10 +62,10 @@ export const CompareProductCard = (props) => {
         wordWrap: 'break-word', // Или 'overflowWrap: 'break-word', в зависимости от браузеров, которые вы хотите поддерживать
         width: '100%'
     };
-    const deleteProducFromCompare = async () => {
+    const deleteProducFromFavorites = async () => {
         
         try {
-            const response = await CompareAPI.deleteProductFromCompareReq({productId: props.product.id, userId: userId});
+            const response = await CompareAPI.deleteProductFromFavoritesReq({productId: props.product.id, userId: userId});
             if (response.status === 200) {
                 props.onProductDelete(response.data);
             }
@@ -89,7 +89,7 @@ export const CompareProductCard = (props) => {
             >
                 <div className="card-inner-container">
                     <Link to={`/product/${props.product.id}`}><Meta style={metaStyle} title={props.product.name} description={(<div>{props.product.price} p., Рейтинг: {props.product.raiting}</div>)}/></Link>
-                    <Button style={{position: "absolute", top: "0", right: "0", border: "0px"}} onClick={deleteProducFromCompare} icon={<CloseOutlined />}></Button>
+                    <Button style={{position: "absolute", top: "0", right: "0", border: "0px"}} onClick={deleteProducFromFavorites} icon={<CloseOutlined />}></Button>
                 </div>
             </Card>  
         </div>

@@ -11,6 +11,7 @@ import {
   Form,
   Input,
   InputNumber,
+  Modal,
   Row,
   Select,
 } from 'antd';
@@ -48,14 +49,12 @@ const tailFormItemLayout = {
   },
 };
 export const Registration = () => {
-    const navigate = useNavigate();
-    const { registrationToggle } = useContext(MyContext);
-    const [form] = Form.useForm();
-    const onFinish = (values) => {
-    //console.log('Received values of form: ', values);
-    AuthAPI.registrationReq(values);
-    registrationToggle();
-  };
+  const navigate = useNavigate();
+  const { registrationToggle } = useContext(MyContext);
+  const [form] = Form.useForm();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(new Array(6).fill(''));
+  const [registrationDate, setRegistrationDate] = useState();
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -68,7 +67,40 @@ export const Registration = () => {
       </Select>
     </Form.Item>
   );
+
+  const handleCodeChange = (value, index) => {
+    const newCode = [...verificationCode];
+    newCode[index] = value;
+    setVerificationCode(newCode);
+  };
+
+  const onFinish = async (values) => {
+    try {
+      setRegistrationDate(values);
+      await AuthAPI.sendVerificationEmail(values.email);
+      setIsModalVisible(true);
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+    }
+  };
+  const handleVerification = async () => {
+    let response;
+    try {
+      const code = verificationCode.join('');
+      await AuthAPI.verifyCode(code);
+      response = await AuthAPI.registrationReq(registrationDate);
+      
+      form.submit();
+      registrationToggle();
+      navigate('/success');
+    } catch (error) {
+      console.error('Verification failed:', error);
+      console.log(response);
+    }
+  };
+
   return (
+    <>
     <Form
       {...formItemLayout}
       form={form}
@@ -216,5 +248,24 @@ export const Registration = () => {
         </Button>
       </Form.Item>
     </Form>
+    <Modal
+        title="Email Verification"
+        visible={isModalVisible}
+        onOk={handleVerification}
+        onCancel={() => setIsModalVisible(false)}
+      >
+        <Row gutter={8}>
+          {verificationCode.map((_, index) => (
+            <Col span={4} key={index}>
+              <Input
+                maxLength={1}
+                value={verificationCode[index]}
+                onChange={(e) => handleCodeChange(e.target.value, index)}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Modal>
+    </>
   );
 };  

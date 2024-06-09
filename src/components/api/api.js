@@ -17,6 +17,9 @@ export const CatalogAPI = {
     productsForCatalogReq(type_id){
         return instance.get(`/getProductsBy/${type_id}`)
     },
+    deltedProductsReq() {
+        return instance.get(`/getDeletedProducts`);
+    },
     productDetailsReq(id) {
         return instance.get(`/getProductBy/${id}`);
     },
@@ -51,11 +54,17 @@ export const CatalogAPI = {
     deleteProductById: (id) => {
         return instance.delete(`/delProduct/${id}`)
     },
+    recoveryProductById({id}) {
+        return instance.put(`/recoveryProduct/`, {id});
+    },
     deleteTypeById: (id) => {
         return instance.delete( `/delType/${id}` )
     },
     addNewCharacteristcsReq({characteristics}) {
         return instance.post(`/addNewCharacteristcs`, {characteristics});
+    },
+    deleteCharacteristcsReq({characteristics}) {
+        return instance.post(`/delCharacteristics`, {characteristics});
     },
     changeProductCharacteristics({characteristics, productId}) {
         return instance.put('/updateProductCharacteristics', {characteristics, productId});
@@ -120,6 +129,8 @@ export const AuthAPI = {
     registrationReq({login, email, name, surname, password, phone}) {
         return instance.post('/registration', {login, email, name, surname, password, phone}).then(() => {this.loginReq({'login': login, 'password': password})});
     },
+    sendVerificationEmail: (email) => {return instance.post('/send-verification-email', { email })},
+    verifyCode: (code) => {return instance.post('/verify-code', { code })},
 }
 export const BasketAPI = {
     getBasket({user_id}) {
@@ -221,5 +232,8 @@ export const CompareAPI = {
     },
     deleteProductFromCompareReq({ productId, userId }) {
         return instance.post(`/deleteProductFromCompare`, { productId, userId });     
+    },
+    deleteProductFromFavoritesReq({ productId, userId }) {
+        return instance.post(`/deleteProductFromFavorites`, { productId, userId });
     },
 }

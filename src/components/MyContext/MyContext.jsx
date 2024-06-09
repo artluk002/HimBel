@@ -7,6 +7,7 @@ export const MyProvider = ({ children }) => {
   const [toggleState, setToggleState] = useState(false); // новое состояние
   const [orderToggleState, setOrderToggleState] = useState(false);
   const [registrationToggleState, setRegistrationToggleState] = useState(false);
+  const [deletedProductsToggleState, setDeletedProductsToggleState] = useState(false);
   const toggle = () => {
     setToggleState(prevState => !prevState); // функция для переключения состояния
   };
@@ -16,9 +17,12 @@ export const MyProvider = ({ children }) => {
   const registrationToggle = () => {
     setRegistrationToggleState(prevState => !prevState);
   };
+  const deletedProductsToggle = () => {
+    setDeletedProductsToggleState(prevState => !prevState);
+  };
 
   return (
-    <MyContext.Provider value={{ toggleState, toggle , orderToggleState, orderToggle, registrationToggleState, registrationToggle}}>
+    <MyContext.Provider value={{ toggleState, toggle , orderToggleState, orderToggle, registrationToggleState, registrationToggle, deletedProductsToggleState, deletedProductsToggle}}>
       {children}
     </MyContext.Provider>
   );

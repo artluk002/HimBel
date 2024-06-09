@@ -17,6 +17,7 @@ import { Compare } from "../Comapre/Compare";
 import { MyProvider } from "../MyContext/MyContext";
 import { Reports } from "../Reports/Reports";
 import { NoPrint } from 'react-easy-print';
+import { DeletedProducts } from '../DeletedProducts/DeletedProducts';
 
 
 export const Main = () =>
@@ -42,6 +43,7 @@ export const Main = () =>
                         <Route path="/orderdetails/:id" element={<OrderDetails/>}/>
                         <Route element={<AdminRoutes/>}>
                             <Route path="/reports" element={<Reports />} />
+                            <Route path="/deleted-products" element={<DeletedProducts />} />
                         </Route>
                     </Route>
                     <Route path='*' element={<Page404/>}/>

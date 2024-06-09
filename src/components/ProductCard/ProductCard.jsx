@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import "./ProductCard.modul.scss";
 import { FiDelete } from "react-icons/fi";
+import { FcDataRecovery } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { CatalogAPI, PhotoAPI } from "../api/api";
 import { Card,
@@ -9,29 +10,17 @@ import { Card,
         Modal,
         Empty
         } from 'antd';
+import { MyContext } from "../MyContext/MyContext";
 const { Meta } = Card;
 
 export const ProductCard = (props) => {
+    const { deletedProductsToggle } = useContext(MyContext);
     // modal
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const showDeleteModal = () => {
         setIsDeleteModalOpen(true);
     };
     const handleDeleteOk = async () => {
-        /*try{
-            await CatalogAPI.deleteTypeById(props.item.id).then(res => {
-                if(res.status === 200){
-                    success(res.data);
-                    window.location.reload();                    
-                }
-                else {
-                    errorm(res.data);
-                }
-            });
-        } catch (err) {
-            console.error('Ошибка при удалении элемента: ', err);
-            errorm(err);
-        }*/
         try{
             await CatalogAPI.deleteProductById(props.product.id).then(res => {
                 if(res.status === 200){
@@ -50,6 +39,30 @@ export const ProductCard = (props) => {
     };
     const handleDeleteCancel = () => {
         setIsDeleteModalOpen(false);
+    };
+    const [isRecoveryModalOpen, setIsRecoveryModalOpen] = useState(false);
+    const showRecoveryModal = () => {
+        setIsRecoveryModalOpen(true);
+    };
+    const handleRecoveryOk = async () => {
+        try{
+            await CatalogAPI.recoveryProductById({id: props.product.id}).then(res => {
+                if(res.status === 200){
+                    success(res.data);
+                    deletedProductsToggle();       /////             
+                }
+                else {
+                    errorm(res.data);
+                }
+            });
+        } catch (err) {
+            console.error('Ошибка при удалении элемента: ', err);
+            errorm(err);
+        }
+        setIsRecoveryModalOpen(false);
+    };
+    const handleRecoveryCancel = () => {
+        setIsRecoveryModalOpen(false);
     };
     // User status
     const [userStatus, setUserStatus] = useState('');
@@ -114,7 +127,14 @@ export const ProductCard = (props) => {
                     <Link to={`/product/${props.product.id}`}><Meta style={metaStyle} title={props.product.name} description={(<div>{props.product.price} p., Рейтинг: {props.product.raiting}</div>)}/></Link>
                     {userStatus === 'admin' && (
                             <div className="card-buttons">
-                                <Button className="delete-button" onClick={showDeleteModal} danger icon={<FiDelete />}></Button>
+                                {props.product.is_active === 1 ? (
+                                    <Button className="delete-button" title='Удалить продукт' onClick={showDeleteModal} danger icon={<FiDelete />}></Button>
+                                )
+                                :
+                                (
+                                    <Button className="delete-button" title='Восстановить продукт' onClick={showRecoveryModal} icon={<FcDataRecovery />}></Button>
+                                )
+                                }
                             </div>
                             )}
                 </div>
@@ -126,7 +146,15 @@ export const ProductCard = (props) => {
                     onCancel={handleDeleteCancel}
                     closable={false}
                 >
-                </Modal>  
+            </Modal>
+            <Modal
+                    title="Уверены, что хотите востановить продукт?" 
+                    open={isRecoveryModalOpen} 
+                    onOk={handleRecoveryOk} 
+                    onCancel={handleRecoveryCancel}
+                    closable={false}
+                >
+            </Modal>  
         </div>
         )
 }
